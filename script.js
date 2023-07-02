@@ -13,10 +13,8 @@ form.addEventListener("submit", (e) => {
 
 let formValidation = () => {
   if (textInput.value === "") {
-    console.log("failure");
     msg.innerHTML = "Task cannot be blank";
   } else {
-    console.log("success");
     msg.innerHTML = "";
     acceptData();
     add.setAttribute("data-bs-dismiss", "modal");
@@ -38,12 +36,10 @@ let acceptData = () => {
   });
 
   localStorage.setItem("data", JSON.stringify(data));
-
-  console.log(data);
-  createTasks();
+  createTodos();
 };
 
-let createTasks = () => {
+let createTodos = () => {
   tasks.innerHTML = "";
   data.map((x, y) => {
     return (tasks.innerHTML += `
@@ -54,7 +50,7 @@ let createTasks = () => {
   
           <span class="options">
             <i onClick= "editTask(this)" data-bs-toggle="modal" data-bs-target="#form" class="fas fa-edit"></i>
-            <i onClick ="deleteTask(this);createTasks()" class="fas fa-trash-alt"></i>
+            <i onClick ="deleteTask(this);createTodos()" class="fas fa-trash-alt"></i>
           </span>
         </div>
     `);
@@ -67,7 +63,6 @@ let deleteTask = (e) => {
   e.parentElement.parentElement.remove();
   data.splice(e.parentElement.parentElement.id, 1);
   localStorage.setItem("data", JSON.stringify(data));
-  console.log(data);
   
 };
 
@@ -77,7 +72,6 @@ let editTask = (e) => {
   textInput.value = selectedTask.children[0].innerHTML;
   dateInput.value = selectedTask.children[1].innerHTML;
   textarea.value = selectedTask.children[2].innerHTML;
-
   deleteTask(e);
 };
 
@@ -89,6 +83,5 @@ let resetForm = () => {
 
 (() => {
   data = JSON.parse(localStorage.getItem("data")) || []
-  console.log(data);
-  createTasks();
+  createTodos();
 })();
